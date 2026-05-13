@@ -4,7 +4,7 @@
  * Plugin Name: WK Cache Manager
  * Plugin URI: https://webkonsulenter.dk
  * Description: Unified cache management: warm cache on updates and monitor all cache purge events.
- * Version: 3.6
+ * Version: 3.7
  * Author: Shakir, Webkonsulenterne
  * Author URI: https://www.webkonsulenter.dk
  * License: GPL v2 or later
@@ -86,15 +86,16 @@ if (is_admin() || (defined('DOING_CRON') && DOING_CRON) || (defined('WP_CLI') &&
     if (file_exists($wkcm_puc_loader)) {
         require_once $wkcm_puc_loader;
         if (class_exists('YahnisElsts\\PluginUpdateChecker\\v5\\PucFactory')) {
-            $wkcm_updater = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+            $GLOBALS['wkcm_puc'] = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
                 'https://github.com/zaman-shakir/wk-cache-manager/',
                 __FILE__,
                 'wk-cache-manager'
             );
-            $wkcm_updater->setBranch('main');
-            // Use the zip attached to each GitHub Release. Falls back to source
-            // archive if no asset attached.
-            $wkcm_updater->getVcsApi()->enableReleaseAssets();
+            // Use the zip attached to each GitHub Release. Without setBranch()
+            // PUC reads version from the LATEST RELEASE'S tag and the plugin
+            // file at that tag — which is what we want. Setting a branch would
+            // make PUC use the branch HEAD instead and skip releases.
+            $GLOBALS['wkcm_puc']->getVcsApi()->enableReleaseAssets();
         }
     }
 }
