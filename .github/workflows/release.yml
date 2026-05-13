@@ -1,0 +1,58 @@
+name: Build & Release plugin zip
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read version from main plugin file
+        id: ver
+        run: |
+          VERSION=$(grep -E "^\s*\*\s*Version:" wk-cache-manager.php | head -1 | sed -E 's/.*Version:\s*([0-9.]+).*/\1/')
+          TAG="${GITHUB_REF_NAME}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          # Sanity: tag (without leading v) must match plugin header version
+          if [ "${TAG#v}" != "$VERSION" ]; then
+            echo "::error::Tag $TAG does not match plugin header version $VERSION"
+            exit 1
+          fi
+
+      - name: Build plugin zip
+        run: |
+          # Stage clean plugin folder under target name so the zip extracts
+          # to /wp-content/plugins/wk-cache-manager/, not the workspace name.
+          mkdir -p /tmp/build/wk-cache-manager
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='logs/*.log' \
+            --exclude='.gitignore' \
+            --exclude='.DS_Store' \
+            ./ /tmp/build/wk-cache-manager/
+          (cd /tmp/build && zip -qr "$GITHUB_WORKSPACE/wk-cache-manager.zip" wk-cache-manager)
+          ls -lh wk-cache-manager.zip
+
+      - name: Create or update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: ${{ steps.ver.outputs.tag }}
+          body: |
+            Auto-generated release for tag ${{ steps.ver.outputs.tag }}.
+
+            Plugin version: ${{ steps.ver.outputs.version }}
+
+            Install / update via WordPress Plugins page.
+          files: wk-cache-manager.zip
+          fail_on_unmatched_files: true
