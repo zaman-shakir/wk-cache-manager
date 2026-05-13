@@ -4,7 +4,7 @@
  * Plugin Name: WK Cache Manager
  * Plugin URI: https://webkonsulenter.dk
  * Description: Unified cache management: warm cache on updates and monitor all cache purge events.
- * Version: 3.9
+ * Version: 4.0
  * Author: Shakir, Webkonsulenterne
  * Author URI: https://www.webkonsulenter.dk
  * License: GPL v2 or later
