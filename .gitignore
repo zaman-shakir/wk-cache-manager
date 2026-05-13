@@ -1,0 +1,12 @@
+.vscode
+.DS_Store
+.qodo
+logs/*.log
+!logs/.gitkeep
+node_modules/
+*.zip
+
+# Ship the bundled update-checker library; ignore composer-managed deps if any
+vendor/composer
+vendor/bin
+vendor/autoload.php
