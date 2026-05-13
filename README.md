@@ -97,7 +97,6 @@ All logs are stored in: `wp-content/plugins/wk-cache-manager/logs/`
 
 Developed by:
 - Shakir
-- Md Rashedul Islam
 - Webkonsulenter team
 
 ## Support
