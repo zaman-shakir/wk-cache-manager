@@ -284,7 +284,7 @@ class CacheMonitor
             if ($page) {
                 $context = 'Admin:' . $page;
             } else {
-                $screen = get_current_screen();
+                $screen = function_exists('get_current_screen') ? \get_current_screen() : null;
                 if ($screen) {
                     $context = 'Admin:' . $screen->id;
                 } else {
@@ -294,12 +294,12 @@ class CacheMonitor
         } else {
             // Frontend - try to get current URL or page type
             $url = $_SERVER['REQUEST_URI'] ?? '';
-            if (is_front_page()) {
+            if (function_exists('is_front_page') && \is_front_page()) {
                 $context = 'Frontend:Homepage';
-            } elseif (is_single()) {
-                $context = 'Frontend:Post#' . get_the_ID();
-            } elseif (is_product()) {
-                $context = 'Frontend:Product#' . get_the_ID();
+            } elseif (function_exists('is_single') && \is_single()) {
+                $context = 'Frontend:Post#' . \get_the_ID();
+            } elseif (function_exists('is_product') && \is_product()) {
+                $context = 'Frontend:Product#' . \get_the_ID();
             } elseif ($url) {
                 $context = 'Frontend:' . parse_url($url, PHP_URL_PATH);
             } else {

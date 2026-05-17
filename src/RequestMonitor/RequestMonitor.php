@@ -216,19 +216,6 @@ class RequestMonitor
         $cached_headers = $headers;
         $cached_url = $url;
 
-        // Debug: Log if we got cache headers
-        $has_cf = isset($headers['cf-cache-status']);
-        $has_ls = isset($headers['x-litespeed-cache']);
-
-        if ($has_cf || $has_ls) {
-            error_log(sprintf(
-                '[WK Cache Manager] Headers fetched for %s - CF:%s, LS:%s',
-                $url,
-                $has_cf ? $headers['cf-cache-status'] : 'NO',
-                $has_ls ? $headers['x-litespeed-cache'] : 'NO'
-            ));
-        }
-
         return $headers;
     }
 
