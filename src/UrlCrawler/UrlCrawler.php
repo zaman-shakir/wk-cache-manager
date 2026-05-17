@@ -1321,9 +1321,9 @@ class UrlCrawler
                         </select>
                     </form>
                     <?php if ($show_raw): ?>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=wk-cache-manager-url-crawler-logs&log_date=' . $selected_date)); ?>" class="button"><?php esc_html_e('View Chart & Table', 'wk-cache-manager'); ?></a>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=wk-cache-manager-url-crawler&view=logs&log_date=' . $selected_date)); ?>" class="button"><?php esc_html_e('View Chart & Table', 'wk-cache-manager'); ?></a>
                     <?php else: ?>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=wk-cache-manager-url-crawler-logs&raw=1&log_date=' . $selected_date)); ?>" class="button"><?php esc_html_e('View Raw Logs', 'wk-cache-manager'); ?></a>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=wk-cache-manager-url-crawler&view=logs&raw=1&log_date=' . $selected_date)); ?>" class="button"><?php esc_html_e('View Raw Logs', 'wk-cache-manager'); ?></a>
                     <?php endif; ?>
                     <button type="button" class="button wkcm-btn-danger" id="clear-logs" data-nonce="<?php echo esc_attr(wp_create_nonce('wk_cache_manager_clear_url_logs')); ?>"><span class="dashicons dashicons-trash"></span> <?php esc_html_e('Clear All Logs', 'wk-cache-manager'); ?></button>
                 </div>
